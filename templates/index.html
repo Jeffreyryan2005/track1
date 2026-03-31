@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Chat</title>
+<style>
+body {
+  background:#0b0b0f;
+  color:white;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box {
+  width:650px;
+}
+textarea {
+  width:100%;
+  padding:15px;
+  border-radius:12px;
+  background:#1c1c22;
+  color:white;
+  border:none;
+}
+button {
+  margin-top:10px;
+  padding:10px 20px;
+  background:#6366f1;
+  border:none;
+  color:white;
+  border-radius:10px;
+}
+.output {
+  margin-top:20px;
+  background:#141417;
+  padding:15px;
+  border-radius:10px;
+}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>AI Chat (Groq)</h2>
+<textarea id="prompt" placeholder="Ask anything..."></textarea>
+<button onclick="send()">Send</button>
+<div id="out" class="output"></div>
+</div>
+
+<script>
+async function send(){
+ let prompt = document.getElementById("prompt").value;
+
+ let res = await fetch("/chat", {
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({prompt})
+ });
+
+ let data = await res.json();
+ document.getElementById("out").innerText = data.response;
+}
+</script>
+</body>
+</html>
