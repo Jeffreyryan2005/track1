@@ -6,20 +6,18 @@ app = Flask(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
 @app.route("/chat", methods=["POST"])
 def chat():
-    prompt = request.json["prompt"]
+    prompt = request.json.get("prompt")
 
     response = client.chat.completions.create(
         model="llama3-70b-8192",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    return jsonify({"response": response.choices[0].message.content})
+    return jsonify({
+        "response": response.choices[0].message.content
+    })
 
 if __name__ == "__main__":
     app.run()
